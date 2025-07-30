@@ -24,7 +24,13 @@
       }
       ul {
         padding: 0;
-        display: none;
+       
+      }
+      ul.close{
+         display: none;
+      }
+      ul.open{
+        display: block;
       }
       ul li {
         list-style: none;
@@ -45,6 +51,10 @@
         background-color: blue;
         color: White;
         cursor: pointer;
+      }
+      li.highlight {
+background-color: blue;
+              color :white;
       }
     </style>
   </head>
@@ -79,7 +89,7 @@
         icon.innerHTML = '<i class="fa-solid fa-square-caret-down"></i>';
         display.appendChild(icon);
         let listItem = document.createElement("ul");
-        listItem.classList.add("list");
+        listItem.classList.add("close");
         let input = document.createElement("input");
         input.type = "text";
         input.placeholder = "Search Here";
@@ -98,11 +108,9 @@
               display.innerText = option;
               listItem.style.display = "none";
               listItem.querySelectorAll("li").forEach((element) => {
-            element.style.backgroundColor = "white";
-              element.style.color = "black";
+           element.classList.remove("highlight")
           });
-              li.style.backgroundColor = "blue";
-              li.style.color = "white";
+              li.classList.add("highlight")
             });
             listItem.appendChild(li);
           });
@@ -120,7 +128,7 @@
 
         display.addEventListener("click", function () {
           listItem.style.display =
-            listItem.style.display == "none" ? "block" : "none";
+            listItem.classList.toggle("open")
         });
         let ascend = true;
         btn.addEventListener("click", function () {
