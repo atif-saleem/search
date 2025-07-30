@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      .wrapper {
+        width: 140px;
+        padding: 5px;
+        border: 1px solid green;
+      }
+      .dispaly {
+        width: 100%;
+        border: 1px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+      }
+      ul {
+        padding: 0;
+        display: none;
+      }
+      ul li {
+        list-style: none;
+        font-size: 17px;
+        margin-top: 10px;
+        background-color: aliceblue;
+      }
+      button {
+        margin-top: 5px;
+      }
+      input {
+        padding: 10px;
+        border-radius: 4px;
+        box-sizing: border-box;
+        width: 100%;
+      }
+      ul li:hover {
+        background-color: blue;
+        color: White;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dropdown">
+      <label for="cars">Choose a car:</label>
+
+      <select name="cars" id="cars">
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+      </select>
+    </div>
+    <div id="dropdown1">Dropdown 1</div>
+    <div id="dropdown2" style="margin-top: 30px">Dropdown 2</div>
+
+    <script>
+      Element.prototype.searchFunctionality = function (option = {}) {
+        let myOption = [...this.querySelectorAll("select option ")];
+        let optionss = myOption.map((elem) => {
+          return elem.innerText;
+        });
+        let options = optionss || {};
+        let placeholder = "Search option";
+        let wrapper = document.createElement("div");
+        wrapper.classList.add("wrapper");
+        let display = document.createElement("div");
+        display.classList.add("dispaly");
+        display.innerText = placeholder;
+        let icon = document.createElement("div");
+        icon.innerHTML = '<i class="fa-solid fa-square-caret-down"></i>';
+        display.appendChild(icon);
+        let listItem = document.createElement("ul");
+        listItem.classList.add("list");
+        let input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "Search Here";
+        let btn = document.createElement("button");
+        btn.innerText = "Sort Data";
+        listItem.appendChild(input);
+        listItem.appendChild(btn);
+        function dispalyLi(filteredArray) {
+          listItem.querySelectorAll("li").forEach((element) => {
+            element.remove();
+          });
+          filteredArray.forEach((option) => {
+            let li = document.createElement("li");
+            li.innerText = option;
+            li.addEventListener("click", function () {
+              display.innerText = option;
+              listItem.style.display = "none";
+              listItem.querySelectorAll("li").forEach((element) => {
+            element.style.backgroundColor = "white";
+              element.style.color = "black";
+          });
+              li.style.backgroundColor = "blue";
+              li.style.color = "white";
+            });
+            listItem.appendChild(li);
+          });
+        }
+        dispalyLi(options);
+        input,
+          addEventListener("input", function () {
+            let val = input.value.toLocaleLowerCase();
+            console.log(val);
+            filteredArray = options.filter((opt) => {
+              return opt.toLocaleLowerCase().includes(val);
+            });
+            dispalyLi(filteredArray);
+          });
+
+        display.addEventListener("click", function () {
+          listItem.style.display =
+            listItem.style.display == "none" ? "block" : "none";
+        });
+        let ascend = true;
+        btn.addEventListener("click", function () {
+          input.value = "";
+          if (ascend) {
+            let sorted = options.sort((a, b) => a.localeCompare(b));
+            dispalyLi(sorted);
+            ascend = false;
+            btn.innerText = "Sort Desc";
+          } else {
+            let sorted = options.sort((a, b) => b.localeCompare(a));
+            dispalyLi(sorted);
+            ascend = true;
+            btn.innerText = "Sort Asc";
+          }
+        });
+        wrapper.appendChild(display);
+        wrapper.appendChild(listItem);
+        console.log(this.querySelector("select"));
+
+        console.log((this.querySelector("select").style.display = "none"));
+        //    this.innerHTML="";
+        this.appendChild(wrapper);
+        return this;
+      };
+ 
+      document.querySelector(".dropdown").searchFunctionality();
+    </script>
+  </body>
+</html>
